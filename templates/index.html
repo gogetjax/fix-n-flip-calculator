@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix-n-Flip Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h1 class="text-center mb-4">Fix-n-Flip Investment Calculator</h1>
+        
+        <div class="row">
+            <!-- Input Form -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Property Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="calculator-form">
+                            <!-- Property Information -->
+                            <div class="mb-4">
+                                <h5>Property Information</h5>
+                                <div class="mb-3">
+                                    <label for="purchase_price" class="form-label">Purchase Price ($)</label>
+                                    <input type="number" class="form-control" id="purchase_price" name="purchase_price" value="200000" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="after_repair_value" class="form-label">After Repair Value ($)</label>
+                                    <input type="number" class="form-control" id="after_repair_value" name="after_repair_value" value="300000" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="repair_costs" class="form-label">Repair Costs ($)</label>
+                                    <input type="number" class="form-control" id="repair_costs" name="repair_costs" value="50000" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="holding_time" class="form-label">Holding Time (months)</label>
+                                    <input type="number" class="form-control" id="holding_time" name="holding_time" value="6" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Purchase Costs -->
+                            <div class="mb-4">
+                                <h5>Purchase Costs</h5>
+                                <div class="mb-3">
+                                    <label for="purchase_closing_costs" class="form-label">Closing Costs ($)</label>
+                                    <input type="number" class="form-control" id="purchase_closing_costs" name="purchase_closing_costs" value="3000">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="purchase_agent_commission_rate" class="form-label">Agent Commission (%)</label>
+                                    <input type="number" class="form-control" id="purchase_agent_commission_rate" name="purchase_agent_commission_rate" value="2.5" step="0.1">
+                                </div>
+                            </div>
+                            
+                            <!-- Holding Costs -->
+                            <div class="mb-4">
+                                <h5>Holding Costs</h5>
+                                <div class="mb-3">
+                                    <label for="property_taxes" class="form-label">Property Taxes ($/year)</label>
+                                    <input type="number" class="form-control" id="property_taxes" name="property_taxes" value="2400">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="insurance" class="form-label">Insurance ($/year)</label>
+                                    <input type="number" class="form-control" id="insurance" name="insurance" value="1200">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="utilities" class="form-label">Utilities ($/month)</label>
+                                    <input type="number" class="form-control" id="utilities" name="utilities" value="200">
+                                </div>
+                            </div>
+                            
+                            <!-- Financing -->
+                            <div class="mb-4">
+                                <h5>Financing</h5>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="financing" name="financing">
+                                    <label class="form-check-label" for="financing">Using Financing</label>
+                                </div>
+                                <div id="financing-details" class="d-none">
+                                    <div class="mb-3">
+                                        <label for="loan_to_value" class="form-label">Loan to Value (%)</label>
+                                        <input type="number" class="form-control" id="loan_to_value" name="loan_to_value" value="75" max="100">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loan_interest_rate" class="form-label">Interest Rate (%)</label>
+                                        <input type="number" class="form-control" id="loan_interest_rate" name="loan_interest_rate" value="7" step="0.1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loan_points" class="form-label">Loan Points (%)</label>
+                                        <input type="number" class="form-control" id="loan_points" name="loan_points" value="1" step="0.1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loan_fees" class="form-label">Loan Fees ($)</label>
+                                        <input type="number" class="form-control" id="loan_fees" name="loan_fees" value="1500">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sale Costs -->
+                            <div class="mb-4">
+                                <h5>Sale Costs</h5>
+                                <div class="mb-3">
+                                    <label for="sale_closing_costs" class="form-label">Closing Costs ($)</label>
+                                    <input type="number" class="form-control" id="sale_closing_costs" name="sale_closing_costs" value="3000">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sale_agent_commission_rate" class="form-label">Agent Commission (%)</label>
+                                    <input type="number" class="form-control" id="sale_agent_commission_rate" name="sale_agent_commission_rate" value="6" step="0.1">
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="button" id="calculate-btn" class="btn btn-primary">Calculate</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="results-container">
+                            <div class="alert alert-info">Enter your property details and click Calculate to see results.</div>
+                            <div id="results-details" style="display: none;">
+                                <h4 class="mb-3">Deal Analysis</h4>
+                                
+                                <div class="mb-4">
+                                    <h5>Summary</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Total Project Cost:</strong> $<span id="total_project_cost">0</span></p>
+                                            <p><strong>Profit:</strong> $<span id="profit">0</span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>ROI:</strong> <span id="roi">0</span>%</p>
+                                            <p><strong>Status:</strong> <span id="status" class="badge"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h5>Cost Breakdown</h5>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>Purchase Costs</td>
+                                                <td>$<span id="total_purchase_cost">0</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Repair Costs</td>
+                                                <td>$<span id="total_repair_cost">0</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Holding Costs</td>
+                                                <td>$<span id="total_holding_cost">0</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Financing Costs</td>
+                                                <td>$<span id="total_financing_cost">0</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sale Costs</td>
+                                                <td>$<span id="total_sale_cost">0</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <canvas id="costChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
