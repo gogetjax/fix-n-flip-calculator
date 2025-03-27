@@ -115,11 +115,11 @@ function createCostChart(data) {
                     data.total_sale_cost
                 ],
                 backgroundColor: [
-                    '#4e73df',
-                    '#1cc88a',
-                    '#36b9cc',
-                    '#f6c23e',
-                    '#e74a3b'
+                    '#6c8aff',
+                    '#34c759',
+                    '#5ac8fa',
+                    '#ffcc00',
+                    '#ff3b30'
                 ]
             }]
         },
